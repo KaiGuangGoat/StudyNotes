@@ -83,6 +83,32 @@ LambdaSubscriber<T>.java:extends AtomicReference<Subscription> implements Flowab
 
 -------------------------------------------------------------
 Scheduler.java:抽象类，线程调度
+	+abstract Worker createWorker()
+	+start()
+	+shutdown()
+	+scheduleDirect(@NonNull Runnable run)->return scheduleDirect(run, 0L, TimeUnit.NANOSECONDS)
+	+scheduleDirect(@NonNull Runnable run, long delay, @NonNull TimeUnit unit)
+		->w.schedule(task, delay, unit) -> return task:实例为 DisposeTask
+	+schedulePeriodicallyDirect(@NonNull Runnable run, long initialDelay, long period, @NonNull TimeUnit unit)
+		->w.schedulePeriodically(periodicTask, initialDelay, period, unit)
+	+<S extends Scheduler & Disposable> S when(@NonNull Function<Flowable<Flowable<Completable>>, Completable> combine)
+
+	-->Worker--->implements Disposable,abstract
+			+schedule(@NonNull Runnable run) -> return schedule(run, 0L, TimeUnit.NANOSECONDS):无延迟调用线程
+			+abstract Disposable schedule(@NonNull Runnable run, long delay, @NonNull TimeUnit unit): delay<=0 ==>delay = 0
+			+schedulePeriodically(@NonNull Runnable run, final long initialDelay, final long period, @NonNull final TimeUnit unit):周期性执行？
+			+now():return currentTime;
+
+			-->PeriodicTask implements Runnable
+					+run()
+	-->DisposeTask implements Runnable,Disposable
+			- final Runnable decoratedRun
+       		- final Worker w
+       		- Thread runner:保证是当前线程
+			
+			+
+	-->				
+
 
 Schedulers.java:Scheduler 的工厂类，产生五个标准的调度器
 	- Scheduler SINGLE 		= RxJavaPlugins.initSingleScheduler(new SingleTask())
@@ -105,6 +131,7 @@ Schedulers.java:Scheduler 的工厂类，产生五个标准的调度器
 		->return new ExecutorScheduler(executor)
 	+start()
 	+shutdown()
+
 	-->IOTask			implements Callable<Scheduler>  -> call() -> IoHolder.DEFAULT
 	-->NewThreadTask	implements Callable<Scheduler>  -> call() -> NewThreadHolder .DEFAULT
 	-->SingleTask		implements Callable<Scheduler>  -> call() -> SingleHolder.DEFAULT
