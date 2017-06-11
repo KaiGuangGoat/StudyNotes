@@ -1,12 +1,12 @@
-Observable 	:±»¹Û²ìÕß
-Observer 	:¹Û²ìÕß
+ï»¿Observable 	:è¢«è§‚å¯Ÿè€…
+Observer 	:è§‚å¯Ÿè€…
 
-Publisher 	:·¢²¼Õß
-Subscriber 	:¶©ÔÄÕß
+Publisher 	:å‘å¸ƒè€…
+Subscriber 	:è®¢é˜…è€…
 
-Consumer 	:Ïû·ÑÕß
+Consumer 	:æ¶ˆè´¹è€…
 package io.reactivex
-	»ùÀà£ºFlowable.....>Subscriber
+	åŸºç±»ï¼šFlowable.....>Subscriber
 		  Observable...>Observer
 		  Single.......>SingleObserver
 		  Completable..>CompletableObserver
@@ -16,21 +16,21 @@ Publisher<T>:interface
 	+subscribe(Subscriber<? super T> s)
 
 Flowable.java:--->implements Publisher<T>
-	+subscribe(FlowableSubscriber<? super T> s)->ObjectHelper.requireNonNull(s, "s is null")ÅĞ¶ÏÊÇ·ñÎª null,ÊÇÅ×³öÒì³£
-											   ->Subscriber<? super T> z = RxJavaPlugins.onSubscribe(this, s):¹³×Ó
-											   ->subscribeActual(z):Êµ¼Êµ÷ÓÃ°ó¶¨£¬½»¸ø×ÓÀàÊµÏÖ
+	+subscribe(FlowableSubscriber<? super T> s)->ObjectHelper.requireNonNull(s, "s is null")åˆ¤æ–­æ˜¯å¦ä¸º null,æ˜¯æŠ›å‡ºå¼‚å¸¸
+											   ->Subscriber<? super T> z = RxJavaPlugins.onSubscribe(this, s):é’©å­
+											   ->subscribeActual(z):å®é™…è°ƒç”¨ç»‘å®šï¼Œäº¤ç»™å­ç±»å®ç°
 	+Flowable<T> just(T item)
-		->return RxJavaPlugins.onAssembly(new FlowableJust<T>(item)):Êµ¼Ê·µ»Ø FlowableJust ÊµÀı
+		->return RxJavaPlugins.onAssembly(new FlowableJust<T>(item)):å®é™…è¿”å› FlowableJust å®ä¾‹
 	+Disposable subscribe(Consumer<? super T> onNext):
 		->return  subscribe(onNext, Functions.ON_ERROR_MISSING,Functions.EMPTY_ACTION, FlowableInternalHelper.RequestMax.INSTANCE)
 	+Disposable subscribe(Consumer<? super T> onNext, Consumer<? super Throwable> onError,
             					Action onComplete, Consumer<? super Subscription> onSubscribe)
-		->¶ÔËÄ¸ö²ÎÊıÅĞ¿Õ
+		->å¯¹å››ä¸ªå‚æ•°åˆ¤ç©º
 		->LambdaSubscriber<T> ls = new LambdaSubscriber<T>(onNext, onError, onComplete, onSubscribe)
 		->subscribe(ls)
 		->return ls
 	+fromCallable(Callable<? extends T> supplier)
-		->return RxJavaPlugins.onAssembly(new FlowableFromCallable<T>(supplier))->Êµ¼Ê·µ»Ø FlowableFromCallable ÊµÀı
+		->return RxJavaPlugins.onAssembly(new FlowableFromCallable<T>(supplier))->å®é™…è¿”å› FlowableFromCallable å®ä¾‹
 	+subscribeOn(Scheduler scheduler)
 
 -------------Subscriber----------------------
@@ -42,7 +42,7 @@ Subscriber<T>.java:interface
 FlowableSubscriber<T>.java--->extends Subscriber:interface
 	+onSubscribe(Subscription s)
 
-Subscription.java:interface,´¦Àí¶©ÔÄ
+Subscription.java:interface,å¤„ç†è®¢é˜…
 	+request(long n)
 	+cancel()
 
@@ -82,9 +82,9 @@ LambdaSubscriber<T>.java:extends AtomicReference<Subscription> implements Flowab
 
 
 -------------------------------------------------------------
-Scheduler.java:³éÏóÀà£¬Ïß³Ìµ÷¶È
+Scheduler.java:æŠ½è±¡ç±»ï¼Œçº¿ç¨‹è°ƒåº¦
 
-Schedulers.java:Scheduler µÄ¹¤³§Àà£¬²úÉúÎå¸ö±ê×¼µÄµ÷¶ÈÆ÷
+Schedulers.java:Scheduler çš„å·¥å‚ç±»ï¼Œäº§ç”Ÿäº”ä¸ªæ ‡å‡†çš„è°ƒåº¦å™¨
 	- Scheduler SINGLE 		= RxJavaPlugins.initSingleScheduler(new SingleTask())
 	- Scheduler COMPUTATION = RxJavaPlugins.initComputationScheduler(new ComputationTask())
 	- Scheduler IO 			= RxJavaPlugins.initIoScheduler(new IOTask())
@@ -114,42 +114,42 @@ Schedulers.java:Scheduler µÄ¹¤³§Àà£¬²úÉúÎå¸ö±ê×¼µÄµ÷¶ÈÆ÷
 
 
 -------------------------------------------------------------
-ObservableSource<T>.java:interface,±»¹Û²ìÕßµÄ»ù´¡½Ó¿Ú£¬T Îª·ºĞÍ		
+ObservableSource<T>.java:interface,è¢«è§‚å¯Ÿè€…çš„åŸºç¡€æ¥å£ï¼ŒT ä¸ºæ³›å‹		
 	+subscribe(@NonNull Observer<? super T> observer)			
 
-Observable<T>.java--->implements ObservableSource<T>,±»¹Û²ìÕß
+Observable<T>.java--->implements ObservableSource<T>,è¢«è§‚å¯Ÿè€…
 	+subscribe(Observer<? super T> observer):final,return void
-		->ÅĞ¶ÏobserverÊÇ·ñÎª¿Õ
-		->observer = RxJavaPlugins.onSubscribe(this, observer),ÉèÖÃobserverµÄ¹³×Ó,»ñÈ¡ºóÔÙÅĞ¿Õ´¦Àí
+		->åˆ¤æ–­observeræ˜¯å¦ä¸ºç©º
+		->observer = RxJavaPlugins.onSubscribe(this, observer),è®¾ç½®observerçš„é’©å­,è·å–åå†åˆ¤ç©ºå¤„ç†
 		->subscribeActual(observer)
-	+subscribeActual(Observer<? super T> observer):abstract,return void ³éÏóÀà,½»¸ø×ÓÀàÊµÏÖ
+	+subscribeActual(Observer<? super T> observer):abstract,return void æŠ½è±¡ç±»,äº¤ç»™å­ç±»å®ç°
 
 
-Observer<T>.java:interface,¹Û²ìÕß
-	+void onSubscribe(@NonNull Disposable d):Í¬²½»òÒì²½µÄ·½·¨´¦Àí»òÈ¡Ïû¹ØÁªµÄ¹Û²ìÕß
+Observer<T>.java:interface,è§‚å¯Ÿè€…
+	+void onSubscribe(@NonNull Disposable d):åŒæ­¥æˆ–å¼‚æ­¥çš„æ–¹æ³•å¤„ç†æˆ–å–æ¶ˆå…³è”çš„è§‚å¯Ÿè€…
 	+void onNext(@NonNull T t)
 	+void onError(@NonNull Throwable e)
 	+void onComplete()
 
-Disposable.java:interface,ÓÃÀ´´¦ÀíÏà¹Ø×ÊÔ´µÄ
+Disposable.java:interface,ç”¨æ¥å¤„ç†ç›¸å…³èµ„æºçš„
 	+void dispose()
-	+boolean isDisposed():µ±·µ»Ø true Ê±£¬±íÊ¾×ÊÔ´ÒÑ¾­±»´¦Àí
+	+boolean isDisposed():å½“è¿”å› true æ—¶ï¼Œè¡¨ç¤ºèµ„æºå·²ç»è¢«å¤„ç†
  
 -----------------------------------------------------
-RxJavaPlugins.java:¹³×Ó£¬×¢Èë
+RxJavaPlugins.java:é’©å­ï¼Œæ³¨å…¥
 	-Function<? super Flowable, ? extends Flowable> onFlowableAssembly
 
 	+static <T> Flowable<T> onAssembly(@NonNull Flowable<T> source)
-		->onFlowableAssemblyÎª¿Õ->return source
-		->onFlowableAssembly²»Îª¿Õ->return apply(onFlowableAssembly, source)
+		->onFlowableAssemblyä¸ºç©º->return source
+		->onFlowableAssemblyä¸ä¸ºç©º->return apply(onFlowableAssembly, source)
 
 	+static <T, R> R apply(@NonNull Function<T, R> f, @NonNull T t)
 		->return f.apply(t)
 ----------------------------------------------------------------------------------------------------
-Function<T, R>.java:interface,T:ÊäÈëµÄÖµ£¬R:·µ»ØµÄÖµ
-	+ R apply(@NonNull T t) throws Exception:¸ù¾İÒµÎñºÍÊäÈëµÄ T Öµ£¬·µ»ØÁíÍâµÄÖµ
+Function<T, R>.java:interface,T:è¾“å…¥çš„å€¼ï¼ŒR:è¿”å›çš„å€¼
+	+ R apply(@NonNull T t) throws Exception:æ ¹æ®ä¸šåŠ¡å’Œè¾“å…¥çš„ T å€¼ï¼Œè¿”å›å¦å¤–çš„å€¼
 
-Action.java:interface,ºÍÏß³Ì Runnable ÀàËÆ
+Action.java:interface,å’Œçº¿ç¨‹ Runnable ç±»ä¼¼
 	+void run() throws Exception
 ------------------------------------------------------
 FlowableJust<T>:extends Flowable<T> implements ScalarCallable<T>
