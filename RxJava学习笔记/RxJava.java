@@ -92,6 +92,7 @@ Scheduler.java:抽象类，线程调度
 	+schedulePeriodicallyDirect(@NonNull Runnable run, long initialDelay, long period, @NonNull TimeUnit unit)
 		->w.schedulePeriodically(periodicTask, initialDelay, period, unit)
 	+<S extends Scheduler & Disposable> S when(@NonNull Function<Flowable<Flowable<Completable>>, Completable> combine)
+		return (S) new SchedulerWhen(combine, this)
 
 	-->Worker--->implements Disposable,abstract
 			+schedule(@NonNull Runnable run) -> return schedule(run, 0L, TimeUnit.NANOSECONDS):无延迟调用线程
@@ -108,6 +109,57 @@ Scheduler.java:抽象类，线程调度
 			
 			+
 	-->				
+
+SchedulerWhen.java--->extends Scheduler implements Disposable
+	- Scheduler actualScheduler
+	- FlowableProcessor<Flowable<Completable>> workerProcessor
+	- Disposable disposable
+
+	+createWorker():return Worker
+		->actualScheduler.createWorker()
+
+		->return  new QueueWorker(actionProcessor, actualWorker)
+
+	-->ScheduledAction extends AtomicReference<Disposable> implements Disposable
+			+ call(Worker actualWorker, CompletableObserver actionCompletable)
+			+ callActual(Worker actualWorker, CompletableObserver actionCompletable):abstract ,return Disposable
+			+ dispose()
+	-->ImmediateAction extends ScheduledAction
+			- Runnable action
+			+ callActual(Worker actualWorker, CompletableObserver actionCompletable):return Disposable
+				-> return actualWorker.schedule(new OnCompletedAction(action, actionCompletable))
+	-->DelayedAction extends ScheduledAction
+			- Runnable action
+			- long delayTime
+			- TimeUnit unit
+
+			+ callActual(Worker actualWorker, CompletableObserver actionCompletable):return Disposable
+				-> return actualWorker.schedule(new OnCompletedAction(action, actionCompletable), delayTime, unit)
+    -->OnCompletedAction implements Runnable
+    		- CompletableObserver actionCompletable;
+        	- Runnable action;
+
+        	+ run()
+        		->action.run()->actionCompletable.onComplete()
+    -->CreateWorkerFunction implements Function<ScheduledAction, Completable>
+    		- Worker actualWorker
+    		+ apply(final ScheduledAction action):return Completable
+    			-> return new WorkerCompletable(action)
+
+    		-->WorkerCompletable extends Completable
+    			- ScheduledAction action
+    			+ subscribeActual(CompletableObserver actionCompletable)
+    				-> actionCompletable.onSubscribe(action) -> action.call(actualWorker, actionCompletable)
+    -->QueueWorker extends Worker
+    		- AtomicBoolean unsubscribed
+    		- FlowableProcessor<ScheduledAction> actionProcessor
+    		- Worker actualWorker
+
+    		+ schedule(@NonNull final Runnable action, final long delayTime, @NonNull final TimeUnit unit):return Disposable
+    			-> return delayedAction
+    		+ schedule(@NonNull final Runnable action):return Disposable
+    			-> return immediateAction
+
 
 
 Schedulers.java:Scheduler 的工厂类，产生五个标准的调度器
