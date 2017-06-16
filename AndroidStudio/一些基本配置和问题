@@ -7,7 +7,13 @@
 	
 二、遇到的问题
 	1、Gradle加载卡住的话"refresh gradle project",设置Gradle Home,
+	.
 	选择File->Settiing->Build,Excution,Deployment->Gradle:Use Local gradle distribution,设置本地安装路径,可以解决
 	
 	2、从github或其他地方导入项目卡死的问题
-	解决：
+	.
+	解决：项目->gradle->wrapper->gradle-wrapper.properties文件，
+	.
+	修改distributionUrl=https\://services.gradle.org/distributions/gradle-4.0-all.zip为你自己AndroidStudio对于的gradle版本。
+	.
+	设置File->Settiing->Build,Excution,Deployment->Gradle:勾选 Offline work可以解决  gradle resolve 卡住的问题，
