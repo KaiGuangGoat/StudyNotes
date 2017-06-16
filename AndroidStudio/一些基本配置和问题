@@ -1,0 +1,13 @@
+一、基本配置
+	
+	1、查看SDK路径：File->other setting ->Default Project Structures
+	
+	2、设置习惯快捷方式：File->Setting ->Keymap
+	
+	
+二、遇到的问题
+	1、Gradle加载卡住的话"refresh gradle project",设置Gradle Home,
+	选择File->Settiing->Build,Excution,Deployment->Gradle:Use Local gradle distribution,设置本地安装路径,可以解决
+	
+	2、从github或其他地方导入项目卡死的问题
+	解决：
