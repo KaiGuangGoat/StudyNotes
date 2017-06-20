@@ -3,6 +3,15 @@
 	1、查看SDK路径：File->other setting ->Default Project Structures
 	
 	2、设置习惯快捷方式：File->Setting ->Keymap
+
+	3、代理的设置：File->Setting->Appearance&Behavior->System Setting -> HTTP Proxy
+					.
+					->Manual Proxy Configuration -> Socks :: Host name:127.0.0.1 ,Port:1080
+
+					如果需要访问https,则在 gradle.properties文件添加：
+					.
+					systemProp.https.proxyHost=127.0.0.1
+					systemProp.https.proxyPort=1080
 	
 	
 二、遇到的问题
@@ -17,3 +26,17 @@
 	修改distributionUrl=https\://services.gradle.org/distributions/gradle-4.0-all.zip为你自己AndroidStudio对于的gradle版本。
 	.
 	设置File->Settiing->Build,Excution,Deployment->Gradle:勾选 Offline work可以解决  gradle resolve 卡住的问题，
+	
+	3.国内的maven库
+	.
+	开源中国： maven { url 'http://maven.oschina.net/content/groups/public/' }
+   	阿里云    ： maven { url"http://maven.aliyun.com/nexus/content/groups/public"}
+
+   	4、运行的时候ADB没显示
+   	.
+   	原因：ADB端口被占用，查看ADB端口被占用：netstat -ano | findstr "5037"，干掉占用端口的程序
+
+
+三、其他问题
+
+	1、查看ADB端口被占用：netstat -ano | findstr "5037"
