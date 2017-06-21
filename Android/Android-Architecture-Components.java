@@ -29,6 +29,18 @@
 
 3、ViewModel
 
-4、DataPersistence，数据的持久化
+	存储管理 UI 数据以便 UI 的配置状态改变的时候能够实时地回复数据。
+
+
+
+4、Rome Persistence Library，数据的持久化
+	
+	提供对SQLite的抽象层，并且能够流畅地操作SQLite数据库
+
 	Room 库，包括 Database, Entity, 和 DAO 三个主要模块
 
+	@Database @Entity @Dao
+
+	@Entity
+		->@Ignore:默认对每个属性添加进数据库表的字段，如果不需要的话可以加上这个
+		->@PrimaryKey 必须要有，多个的情况 @Entity(primaryKeys = {"firstName", "lastName"})
