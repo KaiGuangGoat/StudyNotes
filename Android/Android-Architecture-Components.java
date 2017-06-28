@@ -13,8 +13,22 @@
 1、LifeCycle
 	Lifecycle, LifecycleOwner 和 LifecycleObserver
 
+	public interface LifecycleOwner{
+		Lifecycle getLifecycle();
+	}
+
+	public interface LifecycleRegistryOwner extends LifecycleOwner{
+		LifecycleRegistry getLifecycle();
+	}
+
+	class BaseLifecycleActivity extends AppCompatActivity implements LifecycleOwner{
+		val regist = LifecycleRegistry(this);
+	}
+
 
 2、LiveData
+	持有一些数据并且实现了观察者模式
+
 	优点
 	.能够避免内存泄露
 	.当结束Activity的时候不会出现crash
@@ -31,6 +45,11 @@
 
 	存储管理 UI 数据以便 UI 的配置状态改变的时候能够实时地回复数据。
 
+	特点:
+	1、当屏幕切换或改变时能够自动保留数据
+	2、异步调用
+	3、为UI持有数据
+
 
 
 4、Rome Persistence Library，数据的持久化
@@ -41,6 +60,12 @@
 
 	@Database @Entity @Dao
 
+	创建数据库：
+	RoomDatabase database = Room.databaseBuilder(context.getApplicationContext(),AppDatabase.class, DATABASE_NAME).build();
+
 	@Entity
 		->@Ignore:默认对每个属性添加进数据库表的字段，如果不需要的话可以加上这个
 		->@PrimaryKey 必须要有，多个的情况 @Entity(primaryKeys = {"firstName", "lastName"})
+
+	@Dao
+		->@Insert
