@@ -38,6 +38,8 @@
    	.
    	原因：ADB端口被占用，查看ADB端口被占用：netstat -ano | findstr "5037"，干掉占用端口的程序
 
+   	5、AndroidStudio编译错误，出现data binding layout No resource found that matches the given name (at 'text' with value '@string/loading_products').的错误，string文件也有对应的选项，最后是close项目，remove掉，重新加载进来就可以了。。。
+
 
 三、其他问题
 
