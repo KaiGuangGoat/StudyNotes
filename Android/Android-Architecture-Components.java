@@ -41,6 +41,36 @@
 	Transformations.map()
 	Transformations.switchMap()
 
+	LiveDataSampleViewModel extends ViewModel{
+	 	MutableLiveData<Long> mElapsedTime = new MutableLiveData<>();
+
+	 	getElapsedTime(){
+	 		return mElapsedTime;
+	 	}
+
+	 	public LiveDataSampleViewModel(){
+	 		new Thread(){
+	 			public void run(){ mElapsedTime.setValue(time); }
+	 		}
+	 	}
+
+	}
+
+	SampleActivity extends LifecycleActivity{
+		LiveDataSampleViewModel liveDataSampleModel;
+		onCreate(){
+			liveDataSampleModel = ViewModelProvider.of(this).get(LiveDataSampleViewModel.class);
+			subscribe();
+		}
+
+		void subscribe(){
+			Observer<Long> mObserver = (aLong)->{
+				setText(aLong);//update view
+			}
+			liveDataSampleModel.getElapsedTime().observe(this,mObserver);
+		}
+	}
+
 3、ViewModel
 
 	存储管理 UI 数据以便 UI 的配置状态改变的时候能够实时地回复数据。
@@ -50,6 +80,36 @@
 	2、异步调用
 	3、为UI持有数据
 
+	SampleViewModel extends ViewModel{
+		long data;
+		public void setData(long data){
+			this.data = data;
+		}
+		public long getData(){
+			return data;
+		}
+	}
+
+	SampleActivity extends LifecycleActivity{
+		onCreate(){
+			SampleViewModel sampleModel = ViewModelProvider.of(this).get(SampleViewModel.class);
+			sampleModel.setData();
+			sampleModel.getData();
+		}
+
+	}
+
+	LifecycleActivity extends FragmentActivity implements LifecycleRegistryOwner
+
+	interface LifecycleRegistry extends LifecycleOwner{}
+
+	interface LifecycleOwner{
+		Lifecycle getLifecycle();
+	}
+
+	ViewModel Lifecycle -->// https://codelabs.developers.google.com/codelabs/android-lifecycles/img/8efa40941430fc4c.png
+
+	Activity 或 Fragment 使用观察者模式实时更新数据 ---> 2、LiveData
 
 
 4、Rome Persistence Library，数据的持久化
