@@ -25,6 +25,20 @@
 		val regist = LifecycleRegistry(this);
 	}
 
+	举个栗子:
+	class SampleLifecycleObserver implements LifecycleObserver{
+		public SampleLifecycleObserver(LifecycleRegistryOwner lifecycleOwner){
+			lifecycleOwner.getLifecycle().addObserver(this);
+		}
+
+		@OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+		public doSomethingOnResume(){}
+
+		 @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+		public doSomethingOnPause(){}
+
+	}
+
 
 2、LiveData
 	持有一些数据并且实现了观察者模式
