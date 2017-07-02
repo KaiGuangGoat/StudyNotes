@@ -73,7 +73,7 @@
 	SampleActivity extends LifecycleActivity{
 		LiveDataSampleViewModel liveDataSampleModel;
 		onCreate(){
-			liveDataSampleModel = ViewModelProvider.of(this).get(LiveDataSampleViewModel.class);
+			liveDataSampleModel = ViewModelProviders.of(this).get(LiveDataSampleViewModel.class);
 			subscribe();
 		}
 
@@ -106,7 +106,7 @@
 
 	SampleActivity extends LifecycleActivity{
 		onCreate(){
-			SampleViewModel sampleModel = ViewModelProvider.of(this).get(SampleViewModel.class);
+			SampleViewModel sampleModel = ViewModelProviders.of(this).get(SampleViewModel.class);
 			sampleModel.setData();
 			sampleModel.getData();
 		}

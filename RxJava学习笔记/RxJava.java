@@ -1,4 +1,6 @@
-﻿Observable 	:被观察者
+﻿//栗子：  https://github.com/kaushikgopal/RxJava-Android-Samples 
+
+Observable 	:被观察者
 Observer 	:观察者
 
 Publisher 	:发布者
@@ -296,3 +298,5 @@ SingleObserver<T>.java:interface
 
 BiFunction<T1, T2, R>.java:interface
 	+R apply(@NonNull T1 t1, @NonNull T2 t2) throws Exception
+
+	
