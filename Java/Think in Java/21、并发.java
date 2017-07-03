@@ -16,6 +16,7 @@
 	 SignalThreadPool
 
 
+
 从任务中产生返回值
 
 	java.concurrent.Callable
@@ -30,15 +31,56 @@
 	Future f = exec.submit(c);
 	f.get();//阻塞等待，直到返回
 
+
+
 休眠
 	Thread.sleep();
 	TimeUtil
+
+
 
 后台线程
 
 	设置为后台线程,后台线程在全部非后台线程结束的时候会自动终止
 	thread.setDeamon(true);
 	thread.start();
+
+
+
+volatile synchronized Lock
+
+	Lock lock = new ReentrantLock();
+	lock.lock();
+	.
+	.
+	.
+	lock.unlock();
+
+	lock.trylock();
+
+
+
+
+原子性和易变性
+	原子操作可由线程机制保证其不可中断，专家级别的程序员可以利用这一点写出完全无锁的代码，这些代码不需要同步。
+
+	第一选择应该是使用 synchronized 关键字，而其他的方式是有风险的。
+
+原子类
+	AtomicInteger AtomicLong AtomicReference
+
+	--> boolean compareAndSet(expectedValue,updateValue)
+
+	常规编程很少派上用场，性能调优大有用武之地;
+
+对象锁
+	被锁的对象其他加了 synchronized 关键字的其他方法或代码块都会被锁住
+
+线程本地存储
+	ThreadLocal
+
+
+
 
 
 
