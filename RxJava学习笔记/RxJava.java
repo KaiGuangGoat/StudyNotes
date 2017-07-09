@@ -1,4 +1,7 @@
 ﻿//栗子：  https://github.com/kaushikgopal/RxJava-Android-Samples 
+Android 导入：
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
 
 Observable 	:被观察者
 Observer 	:观察者
