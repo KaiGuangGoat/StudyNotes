@@ -19,6 +19,7 @@ public class FishOcean {
 		for(FishLittle littleFish:littleFishs){
 			ocean.eat(bigFishs.get(random.nextInt(bigFishs.size())), littleFish);
 		}
+		
 	}
 
 }

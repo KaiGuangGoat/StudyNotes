@@ -3,7 +3,8 @@ package thinkingInJava.chapter15.泛型方法;
 import thinkingInJava.chapter15.泛型接口.Generator;
 
 public class FishLittle {
-	private static final long id = Counter.get();
+	private static long counter = 1;
+	private final long id = counter++;
 	
 	private FishLittle(){}
 	
