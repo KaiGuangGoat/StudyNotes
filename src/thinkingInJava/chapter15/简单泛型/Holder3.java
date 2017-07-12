@@ -1,4 +1,4 @@
-package thinkingInJava.chapter15;
+package thinkingInJava.chapter15.简单泛型;
 
 public class Holder3<T> {
 	private T a;

@@ -1,4 +1,4 @@
-package thinkingInJava.chapter15;
+package thinkingInJava.chapter15.简单泛型;
 
 public class TwoTuple<A, B> {
 	public final A first;
