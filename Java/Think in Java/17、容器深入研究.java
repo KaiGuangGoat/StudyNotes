@@ -55,4 +55,14 @@
 	调用 contains 方法将会返回 false，即使这个对象已经
 	被添加。
 
+
+
+13、Java 1.0/1.1 的容器
+
+	Vector 和 Enumeration
+
+	HashTable
+
+	Stack:继承自Vector
 	
+	BitSet
