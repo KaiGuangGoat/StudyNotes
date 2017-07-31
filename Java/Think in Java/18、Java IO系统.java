@@ -52,6 +52,9 @@
 
 	org.omg.CORBA.portable.OutputStream
 
+
+设计 Reader 和 Writer 继承层次结构主要是为了国际化。老的IO流只支持8位字节流，
+而不能很好地处理16位的Unicode字符
 	
 3、Reader implements Closeable,Readable
 
@@ -83,3 +86,11 @@
 	PrintWriter
 
 	StringWriter
+
+例子：
+	
+	BufferedReader in = new BufferedReader(new FileReader(filename));
+	String s;
+	while((s = in.read) != null){
+		stringBuilder.append(s).append("\n");
+	}
