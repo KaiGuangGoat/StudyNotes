@@ -65,6 +65,7 @@
 	FilterReader
 
 	InputStreamReader
+		FileReader
 
 	PipedReader
 
@@ -80,6 +81,7 @@
 	FilterWriter
 
 	OutputStreamWriter
+		FileWriter
 
 	PipedWriter
 
@@ -94,3 +96,17 @@
 	while((s = in.read) != null){
 		stringBuilder.append(s).append("\n");
 	}
+
+
+标准 IO 
+	System.out ---> PrintStream
+	System.in  ---> InputStream
+
+NIO
+
+NIO 有三大核心部分：Channel,Buffer,Selector。数据总是从通道读取到缓冲区，
+或者是从缓冲区写入通道
+
+唯一与通道交互的缓冲器是 ByteBuffer
+
+FileChannel:用于读取、写入、映射和操作文件的通道
