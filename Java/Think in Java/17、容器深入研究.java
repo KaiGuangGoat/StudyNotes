@@ -109,3 +109,75 @@ ArrayList 源码笔记，基于JDK7
 		2、允许添加重复元素
 		3、允许有序(读取数据的顺序是否和存放数据的顺序一致)
 		4、非线程安全
+
+==========================================================================
+LinkedList 源码笔记，基于JDK7
+	
+	LinkedList 是基于双链表实现的，链表的节点定义如下：
+
+	private static class Node<E> {
+        E item;
+        Node<E> next;
+        Node<E> prev;
+
+        Node(Node<E> prev, E element, Node<E> next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+
+    size:存储的元素的个数
+
+    first:首节点,要么为 null，要么 prev==null,item!=null
+
+    last:尾节点，要么为 null,要么 next==null,item!=null
+
+    创建：
+
+    	new LinkedList():创建一个空的集合
+
+   	添加元素:
+
+   		add(E element):return true;---> 保存last节点为l，创建一个新节点赋值给last，item=element，
+   										prev指向l，next指向null，而l.next则指向last
+   										其实就是把值添加到链表末尾
+
+   	获取元素:
+
+   		get(int index):return E;--->如果 index 小于集合长度的一半，从first开始算起，否则从last开始
+
+   	插入元素:
+
+   		add(int index,E element) ---> 先获取到index位置的节点e，然后在这个节点e和e前面的节点之间插入
+   									  新的节点，并赋值element
+
+   	删除元素:
+   		
+   		remove():return element;--->返回第一个节点的值，并删除掉第一个节点
+
+   		remove(int index):return element;--->获取index位置的节点，并删除
+
+
+LinkedList 和 ArrayList 的比较：
+	
+	1、顺序插入速度ArrayList会比较快，因为ArrayList是基于数组实现的，数组是事先new好的，
+	只要往指定位置塞一个数据就好了；LinkedList 则不同，每次顺序插入的时候LinkedList将new
+	一个对象出来，如果对象比较大，那么new的时间势必会长一点，再加上一些引用赋值的操作，
+	所以顺序插入LinkedList必然慢于ArrayList
+
+	2、基于上一点，因为LinkedList里面不仅维护了待插入的元素，还维护了Entry的前置Entry和
+	后继Entry，如果一个LinkedList中的Entry非常多，那么LinkedList将比ArrayList更耗费一些内存
+
+	3、数据遍历的速度，看最后一部分，这里就不细讲了，结论是：使用各自遍历效率最高的方式，
+	ArrayList 的遍历效率会比LinkedList的遍历效率高一些
+
+	4、有些说法认为LinkedList做插入和删除更快，这种说法其实是不准确的：
+
+	（1）LinkedList 做插入、删除的时候，慢在寻址，快在只需要改变前后Entry的引用地址
+
+	（2）ArrayList 做插入、删除的时候，慢在数组元素的批量copy，快在寻址
+
+	所以当插入或删除数据时，越往前 LinkedList 效率越高，越往后 ArrayList 效率越高
+
+	LinkedList 使用 foreach 速度更快，ArrayList 使用普通循环更快
