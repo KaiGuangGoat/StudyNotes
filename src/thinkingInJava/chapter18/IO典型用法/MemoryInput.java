@@ -1,6 +1,7 @@
 package thinkingInJava.chapter18.IO典型用法;
 
 import java.io.StringReader;
+import java.nio.channels.ServerSocketChannel;
 
 public class MemoryInput {
 	

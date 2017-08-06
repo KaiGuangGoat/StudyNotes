@@ -15,7 +15,8 @@ public class CollectionData<T> extends ArrayList<T> {
 		c.add("string2");
 		c.add("string3");
 		System.out.println(c.toArray(new String[0]).length);;
-		
+		int i = 0;
+		System.out.println(i>>1);
 	}
 
 }

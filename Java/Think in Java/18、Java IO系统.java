@@ -106,6 +106,8 @@
 
 5、NIO
 
+// 攻破JAVA NIO技术壁垒: http://www.importnew.com/19816.html
+
 NIO 有三大核心部分：Channel,Buffer,Selector。数据总是从通道读取到缓冲区，
 或者是从缓冲区写入通道
 

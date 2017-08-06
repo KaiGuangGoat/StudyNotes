@@ -66,3 +66,46 @@
 	Stack:继承自Vector
 	
 	BitSet
+
+=================================================================
+ArrayList 源码笔记，基于JDK7
+
+	ArrayList 是基于数组的一个实现 Object[] elementData,elementData是其底层的数组
+
+	size:元素的个数，自增和自减由add和remove方法改变
+
+	创建
+
+		new ArrayList()--->创建一个空的集合，elementData = {}; 指定默认为空的数组
+
+	添加元素
+
+		add(E element)--->如果为空的话则进行扩容，初始扩容大小为10，
+						  之后为数组大小的一半(数组长度加上右移一位)
+
+	插入元素
+
+		add(int index,E element)--->index和index后面的元素后移一个位置
+									给index位置的元素赋值element
+
+	删除元素
+
+		1、指定的元素后面的所有元素向前移动一个位置（System.arraycopy方法） 
+		2、把最后一个元素指定为null，方便GC回收
+
+		remove(int index):return oldValue(E);--->删除指定位置的元素
+
+		remove(Object o):return boolean;--->删除检测到的第一个匹配的对象
+
+	优点：
+		1、随机访问元素非常快
+		2、顺序添加元素非常方便
+	缺点：
+		1、删除元素比较耗费性能，特别是集合的元素很多的时候
+		2、插入元素也是如此
+
+	特点：
+		1、允许添加元素为 null
+		2、允许添加重复元素
+		3、允许有序(读取数据的顺序是否和存放数据的顺序一致)
+		4、非线程安全
