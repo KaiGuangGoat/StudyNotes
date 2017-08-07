@@ -158,6 +158,12 @@ LinkedList 源码笔记，基于JDK7
 
    		remove(int index):return element;--->获取index位置的节点，并删除
 
+   	特点：
+		1、允许添加元素为 null
+		2、允许添加重复元素
+		3、允许有序(读取数据的顺序是否和存放数据的顺序一致)
+		4、非线程安全
+
 
 LinkedList 和 ArrayList 的比较：
 	
@@ -181,3 +187,56 @@ LinkedList 和 ArrayList 的比较：
 	所以当插入或删除数据时，越往前 LinkedList 效率越高，越往后 ArrayList 效率越高
 
 	LinkedList 使用 foreach 速度更快，ArrayList 使用普通循环更快
+
+==========================================================================
+HashMap 源码笔记，基于JDK7
+
+	几个变量：
+		DEFAULT_INITIAL_CAPACITY = 1 << 4;
+
+		MAXIMUM_CAPACITY = 1 << 30;
+
+		DEFAULT_LOAD_FACTOR = 0.75f;
+
+		int threshold;//The next size value at which to resize (capacity * load factor).
+					  //达到扩容的条件，当size>=threshold时，就需要进行扩容
+					  //默认为数组长度的0.75倍
+
+		int modCount;//fail-fast检测机制，每次修改 HashMap 都会加1
+	
+
+	存储单元，是一个单向链表：
+		Entry<K,V> implements Map.Entry<K,V>{
+			final K key;
+	        V value;
+	        Entry<K,V> next;
+	        int hash;
+
+	        Entry(int h, K k, V v, Entry<K,V> n) {
+	            value = v;
+	            next = n;
+	            key = k;
+	            hash = h;
+	        }
+
+	        public final K getKey() {
+            	return key;
+	        }
+
+	        public final V getValue() {
+	            return value;
+	        }
+
+	        public final V setValue(V newValue) {
+	            V oldValue = value;
+	            value = newValue;
+	            return oldValue;
+	        }
+		}
+
+
+	创建：
+
+		new HashMap():设置初始化长度为16,扩展因子为 0.75 ,此时集合还是为空
+
+	判断key相同需同时满足hashcode相同并且key的值相同
