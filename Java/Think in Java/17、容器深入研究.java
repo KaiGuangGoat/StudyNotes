@@ -189,7 +189,7 @@ LinkedList 和 ArrayList 的比较：
 	LinkedList 使用 foreach 速度更快，ArrayList 使用普通循环更快
 
 ==========================================================================
-HashMap 源码笔记，基于JDK7
+HashMap 源码笔记，基于JDK7 //Java 8系列之重新认识HashMap:https://zhuanlan.zhihu.com/p/21673805
 
 	几个变量：
 		DEFAULT_INITIAL_CAPACITY = 1 << 4;
@@ -203,6 +203,8 @@ HashMap 源码笔记，基于JDK7
 					  //默认为数组长度的0.75倍
 
 		int modCount;//fail-fast检测机制，每次修改 HashMap 都会加1
+
+		transient Entry<K,V>[] table = (Entry<K,V>[]) EMPTY_TABLE;//存放元素的数组
 	
 
 	存储单元，是一个单向链表：
@@ -235,8 +237,23 @@ HashMap 源码笔记，基于JDK7
 		}
 
 
-	创建：
+	创建:
 
 		new HashMap():设置初始化长度为16,扩展因子为 0.75 ,此时集合还是为空
+
+	添加元素:
+
+		put(K k,V v):return V;--->1、第一次添加的时候，需要进行初始化扩容，默认大小为 16，自定义大小为
+								  大于自设定参数的最小2的N次幂。设置threshold的值
+								  2、key值为null的话放在数组首位
+								  3、根据key值计算hash值
+								  4、映射hash值到数组的位置，取模运算，hash & (table.length-1)
+								  5、如果查找存在相同的key值，则替换掉对应的value值，并返回旧值
+								  6、modCount++:只有添加新的key值进来才会加1，替换value值不会加1
+								  7、调用addEntry()
+								  		7.1、判断是否需要进行扩容:size >= threshold,并且映射的位置已经
+								  			 有其他的元素了，扩容的机制是table容量X2，所有元素重新计算
+								  			 hash映射
+								  		7.2、把元素映射到table对应的位置，如果有其他元素，则组成链表
 
 	判断key相同需同时满足hashcode相同并且key的值相同
