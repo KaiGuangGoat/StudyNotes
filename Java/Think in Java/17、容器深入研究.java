@@ -104,7 +104,7 @@ ArrayList 源码笔记，基于JDK7
 		1、删除元素比较耗费性能，特别是集合的元素很多的时候
 		2、插入元素也是如此
 
-	特点：
+	关注点：
 		1、允许添加元素为 null
 		2、允许添加重复元素
 		3、允许有序(读取数据的顺序是否和存放数据的顺序一致)
@@ -158,7 +158,7 @@ LinkedList 源码笔记，基于JDK7
 
    		remove(int index):return element;--->获取index位置的节点，并删除
 
-   	特点：
+   	关注点：
 		1、允许添加元素为 null
 		2、允许添加重复元素
 		3、允许有序(读取数据的顺序是否和存放数据的顺序一致)
@@ -255,5 +255,31 @@ HashMap 源码笔记，基于JDK7 //Java 8系列之重新认识HashMap:https://z
 								  			 有其他的元素了，扩容的机制是table容量X2，所有元素重新计算
 								  			 hash映射
 								  		7.2、把元素映射到table对应的位置，如果有其他元素，则组成链表
+
+	删除元素:
+
+		remove(Object key):return e.value;--->1、根据hash映射定位到table对应的位置i
+											  2、遍历链表，找到对应相同的key值
+											  3、找到则删除对应的节点，如果链表长度为1，则table[i]=null;
+
+	插入元素:
+
+		HashMap 没有插入的概念，因为它的数据结构是无序的，基于hashcode的强随机性
+
+	关注点：
+
+		1、key 和 value 都允许为null
+		2、key 值重复则覆盖，value值可以重复
+		3、无序(读取数据的顺序是否和存放数据的顺序一致)
+		4、非线程安全
+
+	HashMap 和 HashTable 的区别:
+
+		1、Hashtable 是线程安全的，Hashtable 所有对外提供的方法都使用了synchronized，
+
+		   也就是同步，而HashMap则是线程非安全的
+
+		2、Hashtable 不允许空的value，空的value将导致空指针异常，而HashMap则无所谓，没有这方面的限制
+
 
 	判断key相同需同时满足hashcode相同并且key的值相同
