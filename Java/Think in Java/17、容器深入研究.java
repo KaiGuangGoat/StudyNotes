@@ -283,3 +283,91 @@ HashMap 源码笔记，基于JDK7 //Java 8系列之重新认识HashMap:https://z
 
 
 	判断key相同需同时满足hashcode相同并且key的值相同
+
+==========================================================================
+LinkedHashMap 源码笔记，基于JDK7
+	extends HashMap<K,V>
+	implements Map<K,V>
+
+	LinkedHashMap 是 HashMap 和 LinkedList 的结合
+
+	几个变量：
+
+		Entry<K,V> header;-->双向链表头部
+
+		boolean accessOrder;-->false:所有插入的元素按照插入的顺序排序
+							   true: 所有插入的元素按照访问的顺序进行排序
+
+	存储单元，是一个双向链表，添加了分别指向前后的两个指针，对插入的元素顺序进行维护：
+
+		private static class Entry<K,V> extends HashMap.Entry<K,V> {
+	        // These fields comprise the doubly linked list used for iteration.
+	        Entry<K,V> before, after;
+
+	        /**
+	         * Removes this entry from the linked list.
+	         */
+	        private void remove() {
+	            before.after = after;
+	            after.before = before;
+	        }
+
+	        /**
+	         * Inserts this entry before the specified existing entry in the list.
+	         */
+	        private void addBefore(Entry<K,V> existingEntry) {
+	            after  = existingEntry;
+	            before = existingEntry.before;
+	            before.after = this;
+	            after.before = this;
+	        }
+
+	        /**
+	         * This method is invoked by the superclass whenever the value
+	         * of a pre-existing entry is read by Map.get or modified by Map.set.
+	         * If the enclosing Map is access-ordered, it moves the entry
+	         * to the end of the list; otherwise, it does nothing.
+	         */
+	        void recordAccess(HashMap<K,V> m) {
+	            LinkedHashMap<K,V> lm = (LinkedHashMap<K,V>)m;
+	            if (lm.accessOrder) {
+	                lm.modCount++;
+	                remove();
+	                addBefore(lm.header);
+	            }
+	        }
+
+	        void recordRemoval(HashMap<K,V> m) {
+	            remove();
+	        }
+
+	     }
+
+	
+
+	关注点：
+
+		1、key 和 value 都允许为null
+		2、key 值重复则覆盖，value值可以重复
+		3、有序(读取数据的顺序是否和存放数据的顺序一致)
+		4、非线程安全
+
+	可以利用 LinkedHashMap 实现 LRU(最近最少使用算法) 算法：
+
+		public class LRUCache extends LinkedHashMap
+		{
+		    public LRUCache(int maxSize)
+		    {
+		        super(maxSize, 0.75F, true);
+		        maxElements = maxSize;
+		    }
+
+		    //返回为true的时候，触发调用 removeEntryForKey(eldest.key);方法
+		    protected boolean removeEldestEntry(java.util.Map.Entry eldest)
+		    {
+		        return size() > maxElements;
+		    }
+
+		    private static final long serialVersionUID = 1L;
+		    protected int maxElements;
+		}
